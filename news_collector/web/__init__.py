@@ -1,4 +1,5 @@
 import logging
+
 from flask import Flask
 from flask_appbuilder import AppBuilder
 from flask_appbuilder.security.mongoengine.manager import SecurityManager
@@ -12,4 +13,4 @@ dbmongo = MongoEngine(app)
 # The Flask-AppBuilder init
 appbuilder = AppBuilder(app, security_manager_class=SecurityManager)
 
-from web import models, views
+from news_collector.web import models

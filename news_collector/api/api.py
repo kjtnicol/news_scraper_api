@@ -1,7 +1,8 @@
 import flask
-from flask import request, jsonify
-from dao.mongodb_dao import MongoDbDao
 from bson.json_util import dumps
+from flask import request
+
+from news_collector.dao.mongodb_dao import MongoDbDao
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -24,4 +25,3 @@ def api_keyword():
 
     return dumps(results)
 
-app.run()

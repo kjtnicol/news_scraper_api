@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
-import scrapy
-import requests
-from readability import Document
 from datetime import datetime
-from bs4 import BeautifulSoup
+
 import pandas as pd
+import requests
+import scrapy
+from bs4 import BeautifulSoup
+from readability import Document
+
 from news_collector.dao.mongodb_dao import MongoDbDao
 
 
