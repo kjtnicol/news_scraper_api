@@ -1,6 +1,6 @@
 import flask
 from flask import request, jsonify
-from news_collector.dao.mongodb_dao import MongoDbDao
+from dao.mongodb_dao import MongoDbDao
 from bson.json_util import dumps
 
 app = flask.Flask(__name__)
@@ -22,6 +22,6 @@ def api_keyword():
 
     results = dao.get_items_by_keyword('bbc_articles', keyword)
 
-    return jsonify(results)
+    return dumps(results)
 
 app.run()
