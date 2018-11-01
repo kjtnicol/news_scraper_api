@@ -1,4 +1,10 @@
 
+# General Config
+debug_mode = True
+host_name = '127.0.0.1'
+port = 5000
+
+
 # Database Access Config
 db_conn_string = 'mongodb+srv://isentia:isentia@cluster0-aoq9j.mongodb.net/admin'
 db_name = 'scraped_news'
