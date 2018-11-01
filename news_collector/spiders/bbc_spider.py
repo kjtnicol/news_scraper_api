@@ -8,13 +8,14 @@ from bs4 import BeautifulSoup
 from readability import Document
 
 from news_collector.dao.mongodb_dao import MongoDbDao
+from news_collector import app_config
 
 
 class BbcSpiderSpider(scrapy.Spider):
     name = 'bbc_spider'
     allowed_domains = ['www.bbc.com/']
-    start_urls = ['http://www.bbc.com//']
-    db_dao = MongoDbDao('mongodb+srv://isentia:isentia@cluster0-aoq9j.mongodb.net/admin')
+    start_urls = [app_config.base_url]
+    db_dao = MongoDbDao(app_config.db_conn_string)
 
     # Part of the URL list doesn't have base URL string, and the others have.
     # Thus, we need to make things all the same with this method.
@@ -25,15 +26,14 @@ class BbcSpiderSpider(scrapy.Spider):
 
     @staticmethod
     def clean_article_text(raw_text):
-        removing_strings = ['Media playback is unsupported on your device ']
         cleaned = raw_text
-        for del_str in removing_strings:
+        for del_str in app_config.removing_strings:
             cleaned = cleaned.replace(del_str, '')
 
         return cleaned
 
     def save_to_db(self, df):
-        self.db_dao.upload_df(df, 'bbc_articles')
+        self.db_dao.upload_df(df, app_config.collection_name)
 
     def parse(self, response):
         # Extracting the content using css selectors
@@ -84,7 +84,7 @@ class BbcSpiderSpider(scrapy.Spider):
         article_info_df = article_info_df[['title', 'url', 'created_time', 'tag_text', 'tag_url', 'article_text']]
         article_info_df = article_info_df.drop_duplicates(subset=['url'])
         article_info_df = article_info_df
-        article_info_df.to_csv('news_scraped.csv')
+        article_info_df.to_csv(app_config.csv_file_name)
 
         self.save_to_db(article_info_df)
 

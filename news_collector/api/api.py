@@ -3,11 +3,12 @@ from bson.json_util import dumps
 from flask import request
 
 from news_collector.dao.mongodb_dao import MongoDbDao
+from news_collector import app_config
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
-conn_string = 'mongodb+srv://isentia:isentia@cluster0-aoq9j.mongodb.net/admin'
-dao = MongoDbDao(conn_string)
+
+dao = MongoDbDao(app_config.db_conn_string)
 
 @app.route('/', methods=['GET'])
 def home():

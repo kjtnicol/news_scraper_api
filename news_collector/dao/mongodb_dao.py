@@ -2,10 +2,11 @@ from pymongo import MongoClient, TEXT
 import json
 import re
 import pandas as pd
+from news_collector import app_config
 
 
 class MongoDbDao:
-    def __init__(self, conn_string, db_name='scraped_news'):
+    def __init__(self, conn_string, db_name=app_config.db_name):
         self.client = MongoClient(conn_string)
         self.db = self.client[db_name]
 
@@ -35,7 +36,3 @@ class MongoDbDao:
 
         return result
 
-if __name__ == "__main__":
-    dao = MongoDbDao('mongodb+srv://isentia:isentia@cluster0-aoq9j.mongodb.net/admin')
-    df = pd.read_csv('scraped_news.csv')
-    dao.upload_df(df)
