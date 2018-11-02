@@ -26,6 +26,8 @@ class BbcSpiderSpider(scrapy.Spider):
 
     @staticmethod
     def clean_article_text(raw_text):
+        # readability library is not perfect,. sometimes unnecessary text is included.
+        # remove those manually as follows.
         cleaned = raw_text
         for del_str in app_config.removing_strings:
             cleaned = cleaned.replace(del_str, '')
@@ -65,6 +67,7 @@ class BbcSpiderSpider(scrapy.Spider):
 
             title = doc.title()
             cleansed_body = doc.summary()
+            # Cannot scrap created time with scrapy nor with readability, so use BeautifulSoup for that.
             body_soup = BeautifulSoup(cleansed_body)
             cleansed_article_text = ' '.join([x.get_text().replace('\n', ' ') for x in body_soup.find_all('p')])
             cleansed_article_text = self.clean_article_text(cleansed_article_text)
@@ -80,6 +83,7 @@ class BbcSpiderSpider(scrapy.Spider):
 
             article_info_list.append(scraped_info)
 
+        # pandas dataframe is a lot easier to handle than using built-in yield functionality
         article_info_df = pd.DataFrame(article_info_list)
         article_info_df = article_info_df[['title', 'url', 'created_time', 'tag_text', 'tag_url', 'article_text']]
         article_info_df = article_info_df.drop_duplicates(subset=['url'])

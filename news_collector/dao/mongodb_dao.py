@@ -10,6 +10,7 @@ class MongoDbDao:
         self.db = self.client[db_name]
 
     def upload_df(self, df, collection_name):
+        # Use try and except to avoid inserting duplicate entries (url is an unique index).
         records = json.loads(df.T.to_json()).values()
         try:
             self.db[collection_name].insert_many(records, ordered=False)
