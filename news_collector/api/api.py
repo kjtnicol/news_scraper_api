@@ -18,14 +18,14 @@ def home():
 <a href="%s">%s</a>
 ''' % (link_string, link_string)
 
-@app.route('/api/articles/bbc', methods=['GET'])
+@app.route(app_config.api_url, methods=['GET'])
 def api_keyword():
     if 'keyword' in request.args:
         keyword = request.args['keyword']
     else:
         return "Error: No keyword field provided. Please specify a keyword."
 
-    results = dao.get_items_by_keyword('bbc_articles', keyword)
+    results = dao.get_items_by_keyword(app_config.collection_name, keyword)
 
     return dumps(results)
 

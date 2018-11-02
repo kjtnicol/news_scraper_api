@@ -1,7 +1,6 @@
 from pymongo import MongoClient, TEXT, errors
 import json
 import re
-import pandas as pd
 from news_collector import app_config
 
 
@@ -17,15 +16,13 @@ class MongoDbDao:
         except errors.BulkWriteError as e:
             print(e.details['writeErrors'])
 
-        """
-        for idx, row in df.iterrows():
-            self.db[collection_name].update(
-                {'url': row['url']},
-                # row.to_dict(),
-                json.loads(row.to_json()),
-                upsert=True
-            )
-        """
+    def get_items_by_urls(self, urls, collection_name):
+        result = self.db[collection_name].find({'url': {'$in': urls}})
+
+        return result
+
+    def delete_items_by_urls(self, urls, collection_name):
+        self.db[collection_name].delete_many({'urls': {'$in': urls}})
 
     def get_items_by_keyword(self, collection_name, keyword):
         rgx = re.compile('.*' + keyword + '.*', re.IGNORECASE)  # compile the regex

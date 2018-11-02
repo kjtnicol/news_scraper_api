@@ -1,8 +1,11 @@
 
 # General Config
 debug_mode = True
+
+# Web Config
 host_name = '127.0.0.1'
 port = 5000
+api_url = '/api/articles/bbc'
 
 
 # Database Access Config
