@@ -3,7 +3,7 @@
 debug_mode = True
 
 # Web Config
-host_name = '127.0.0.1'
+host_name = '0.0.0.0'
 port = 5000
 api_url = '/api/articles/bbc'
 
